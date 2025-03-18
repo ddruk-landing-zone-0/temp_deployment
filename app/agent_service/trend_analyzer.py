@@ -16,7 +16,7 @@ class SearchTokenModel(BaseModel):
         title="Search Tokens",
         description="List of search tokens in the form of common nouns or search queries relevant to the brand. These tokens should be meanningful phrase not a single word."
     )
-    product_id: str = Field(title="Product ID", description="The product ID for which trends are simulated.")
+    product_id: str = Field(title="Product ID", description="The product ID for which trends are simulated. Example: P001")
 
 
 class DummyTrendModel(BaseModel):
