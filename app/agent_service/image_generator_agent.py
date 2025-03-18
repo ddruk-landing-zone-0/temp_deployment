@@ -7,7 +7,11 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-# os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/Users/debasmitroy/Desktop/programming/gemini-agent-assist/key.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "key.json"
+# dump GOOGLE_APPLICATION_CREDENTIALS_CONTENT to key.json
+with open("key.json", "w") as f:
+    f.write(os.environ["GOOGLE_APPLICATION_CREDENTIALS_CONTENT"])
+
 os.environ["GOOGLE_CLOUD_PROJECT"] = "openserve-0"
 os.environ["GOOGLE_CLOUD_LOCATION"] = "us-central1"
 
