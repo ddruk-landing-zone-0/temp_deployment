@@ -26,9 +26,9 @@ load_dotenv()
 app = FastAPI()
 
 
-from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
+# from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
 
-app.add_middleware(HTTPSRedirectMiddleware)
+# app.add_middleware(HTTPSRedirectMiddleware)
 
 
 # API Clients (Dependency Injection ready)
