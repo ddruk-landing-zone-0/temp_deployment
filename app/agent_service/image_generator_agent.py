@@ -7,8 +7,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/Users/debasmitroy/Desktop/programming/gemini-agent-assist/key.json"
-os.environ["GOOGLE_CLOUD_PROJECT"] = "hackathon0-project"
+# os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/Users/debasmitroy/Desktop/programming/gemini-agent-assist/key.json"
+os.environ["GOOGLE_CLOUD_PROJECT"] = "openserve-0"
 os.environ["GOOGLE_CLOUD_LOCATION"] = "us-central1"
 
 class ImageGenerator:
