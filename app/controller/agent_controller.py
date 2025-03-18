@@ -121,7 +121,7 @@ async def process_action(
 
 
 # FastAPI Route Handlers
-@app.post("/trend-analyzer")
+@app.api_route("/trend-analyzer", methods=["GET", "POST"])
 async def handle_action_trend_analyzer(
     request: Request,
     background_tasks: BackgroundTasks,
@@ -137,7 +137,7 @@ async def handle_action_trend_analyzer(
 
 
 
-@app.post("/site-log-agent")
+@app.api_route("/site-log-agent", methods=["GET", "POST"])
 async def handle_action_site_log_agent(
     request: Request,
     background_tasks: BackgroundTasks,
@@ -156,7 +156,7 @@ async def handle_action_site_log_agent(
 
 
 
-@app.post("/site-log-refiner-agent")
+@app.api_route("/site-log-refiner-agent", methods=["GET", "POST"])
 async def handle_action_site_log_refiner_agent(
     request: Request,
     background_tasks: BackgroundTasks,
@@ -174,7 +174,7 @@ async def handle_action_site_log_refiner_agent(
     return await process_action("site_log_refiner_agent", action, background_tasks, api_client, output_key=output_key)
 
 
-@app.post("/script-writer-agent")
+@app.api_route("/script-writer-agent", methods=["GET", "POST"])
 async def handle_action_script_writer_agent(
     request: Request,
     background_tasks: BackgroundTasks,
@@ -201,7 +201,8 @@ async def handle_action_script_writer_agent(
 
     return await process_action("script_writer_agent", action, background_tasks, api_client, output_key=output_key)
 
-@app.post("/image-generator-agent")
+
+@app.api_route("/image-generator-agent", methods=["GET", "POST"])
 async def handle_action_image_generator_agent(
     request: Request,
     background_tasks: BackgroundTasks,
@@ -218,7 +219,8 @@ async def handle_action_image_generator_agent(
 
     return await process_action("image_generator_agent", action, background_tasks, api_client, output_key=output_key)
 
-@app.post("/audio-agent")
+
+@app.api_route("/audio-agent", methods=["GET", "POST"])
 async def handle_action_audio_agent(
     request: Request,
     background_tasks: BackgroundTasks,
@@ -236,7 +238,7 @@ async def handle_action_audio_agent(
     return await process_action("audio_agent", action, background_tasks, api_client, output_key=output_key)
 
 
-@app.post("/video-agent")
+@app.api_route("/video-agent", methods=["GET", "POST"])
 async def handle_action_video_agent(
     request: Request,
     background_tasks: BackgroundTasks,
@@ -250,7 +252,8 @@ async def handle_action_video_agent(
 
     return await process_action("video_agent", action, background_tasks, api_client, output_key=output_key)
 
-@app.post("/email-agent")
+
+@app.api_route("/email-agent", methods=["GET", "POST"])
 async def handle_action_email_agent(
     request: Request,
     background_tasks: BackgroundTasks,
