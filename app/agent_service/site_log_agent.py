@@ -21,6 +21,9 @@ os.environ["GOOGLE_CLOUD_LOCATION"] = "us-central1"
 
 SITELOG_INMEM_DB = get_sitelog_inmemory_db(load_json_data("app/data/sitelog.json"))
 
+class ProductId(BaseModel):
+    product_id: str = Field(title="Product ID", description="The product ID for which trends are simulated. Example: P001")
+
 class SiteLogQuery(BaseModel):
     text_query: str = Field(title="Text Query", description="The text query to search in the site log.")
     sql_query: str = Field(title="SQL Query", description="Corresponding SQL query to search in the site log.")
@@ -35,6 +38,16 @@ class SiteLogAgent:
         SITELOG_INMEM_DB_COLS, SITELOG_INMEM_DB_HEAD = SITELOG_INMEM_DB.query_data("SELECT * FROM sitelog LIMIT 5")
         self.PD_SITELOG_INMEM_DB_HEAD = pd.DataFrame(SITELOG_INMEM_DB_HEAD, columns=SITELOG_INMEM_DB_COLS)
 
+        self.product_engine = GeminiModel(
+                                    model_name="gemini-2.0-flash-001",
+                                    basemodel=ProductId,
+                                    temperature=0.5,
+                                    max_output_tokens=1024,
+                                    systemInstructions=None,
+                                    max_retries=5,
+                                    wait_time=30
+                                    )
+
         self.engine = GeminiJsonEngine(
                                     model_name="gemini-2.0-flash-001",
                                     basemodel=SiteLogQueries,
@@ -46,6 +59,16 @@ class SiteLogAgent:
                                     )
         
     def run(self,target_product_id):
+        product_id_res = self.product_engine(
+            [
+                "You are an AI assistant. Your task is to extract the product ID from the given text.",
+                f"Here is the text: {target_product_id}",
+                "Extract the product ID from the text and provide it as the output, using the tool 'ProductId'."
+            ]
+        )
+        target_product_id = product_id_res[0]['product_id'] 
+
+        print(f"Product ID: {target_product_id}")
 
         # Validate the product ID
         PRODUCT_ID_COUNT = SITELOG_INMEM_DB.query_data(f"SELECT COUNT(*) FROM sitelog WHERE product_id = '{target_product_id}'")
