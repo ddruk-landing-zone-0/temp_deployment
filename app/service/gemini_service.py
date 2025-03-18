@@ -56,7 +56,7 @@ class GeminiModel:
             LOGGER.debug(f"Initialized GeminiModel with model {model_name} , project {self._project_id}, location {self._project_location}")
         except Exception as e:
             LOGGER.error(f"Failed to initialize GeminiModel: {str(e)}")
-            raise RuntimeError(f"Failed to initialize GeminiModel: {str(e)}")
+            # raise RuntimeError(f"Failed to initialize GeminiModel: {str(e)}")
 
     @staticmethod
     def _get_access_token():
