@@ -21,7 +21,7 @@ RUN apt update && apt install -y ffmpeg
 
 
 # Make port 8080 available to the world outside this container
-EXPOSE 6378
+EXPOSE 8080
 
 # Run app.py when the container launches with gunicorn
 # CMD ["gunicorn", "-w", "2", "--timeout", "120", "-b", "0.0.0.0:8080", "wsgi:app"]

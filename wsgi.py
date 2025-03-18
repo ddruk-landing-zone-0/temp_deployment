@@ -11,5 +11,5 @@ import os
 import uvicorn
 from app import app as application
 
-port = "6378"
+port = "8080"
 uvicorn.run(application, host="0.0.0.0", port=port) 
