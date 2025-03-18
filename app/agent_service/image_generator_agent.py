@@ -54,6 +54,7 @@ class ImageGenerator:
 
     def run(self,script_result):
         randomly_genrated_local_bucket_id = str(random.randint(1000,9999))
+        print("***************** > ",randomly_genrated_local_bucket_id)
         os.makedirs(f"assets/{randomly_genrated_local_bucket_id}/top", exist_ok=True)
         os.makedirs(f"assets/{randomly_genrated_local_bucket_id}/bottom", exist_ok=True)
 

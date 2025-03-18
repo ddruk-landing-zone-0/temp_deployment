@@ -51,7 +51,7 @@ async def do_task(action: Dict[str, Any], task_function, api_client, output_key)
             save_json_data(f"assets/{workspace_id}/{output_key}.json", result)
             result = json.dumps(result)
 
-        print(f"2. Task {task_id} completed successfully.")# Result: {result}")
+        print(f"2. Task {task_id} completed successfully.# Result: {result}")
 
         # Upload file using API client's upload_file method
         await api_client.upload_file(
