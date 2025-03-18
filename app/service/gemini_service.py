@@ -2,6 +2,8 @@ import os
 import google.auth
 import google.auth.transport.requests
 from google.oauth2 import service_account
+import json
+import urllib.request
 import requests
 from .pydantic_service import pydantic_schema_to_tool_format
 from .logger import LOGGER
@@ -41,8 +43,8 @@ class GeminiModel:
         """
         try:
             self._access_token = self._get_access_token()
-            self._project_id = self._get_project_id()
-            self._project_location = self._get_project_location()
+            self._project_id = "openserve-0" #self._get_project_id()
+            self._project_location = "us-central1" #self._get_project_location()
             self._model_name = model_name
             self.temperature = temperature
             self.max_output_tokens = max_output_tokens
@@ -58,8 +60,7 @@ class GeminiModel:
             LOGGER.error(f"Failed to initialize GeminiModel: {str(e)}")
             # raise RuntimeError(f"Failed to initialize GeminiModel: {str(e)}")
 
-    @staticmethod
-    def _get_access_token():
+    def _get_access_token(self):
         """Retrieve an access token using service account credentials."""
         try:
             credentials = service_account.Credentials.from_service_account_file(
@@ -69,7 +70,24 @@ class GeminiModel:
             credentials.refresh(google.auth.transport.requests.Request())
             return credentials.token
         except Exception as e:
-            raise RuntimeError(f"Error obtaining access token: {str(e)}")
+            # raise RuntimeError(f"Error obtaining access token: {str(e)}")
+            print(f"Error obtaining access token: {str(e)}, Now trying to get access token using metadata server")
+            pass
+        
+        return self._get_access_token_v2()
+
+    def _get_access_token_v2(self):
+        """Fetches an access token for authentication with Vertex AI."""
+        try:
+            url = "http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token"
+            req = urllib.request.Request(url, headers={"Metadata-Flavor": "Google"})
+            with urllib.request.urlopen(req) as response:
+                token_data = json.load(response)
+                return token_data["access_token"]
+        except Exception as e:
+            LOGGER.error(f"Error obtaining access token from metadata server: {str(e)}")
+            print(f"Error obtaining access token from metadata server: {str(e)}")
+            # raise RuntimeError(f"Error obtaining access token from metadata server: {str(e)}")
 
     def _get_project_id(self):
         """Retrieve the project ID from environment variables or config."""
