@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 from app.openserve_service.do_task import do_task
 from app.openserve_service.respond_chat_message import respond_chat_message
 from app.openserve_service.api import APIClient
+import re
 
 from app.service.common_utils import load_json_data, save_json_data
 
@@ -284,7 +285,22 @@ async def handle_action_email_agent(
         workspace_id = action['workspace']['id']
         input_fname = f"assets/{workspace_id}/audio_script_result.json"
         input_data = load_json_data(input_fname)
+
+        emails_string = action['task']['input']
+
+        # validate emails
+        emails = ["kabirrajsingh10@gmail.com", "ddruk2018@gmail.com"]
+        for email in emails_string.split(","):
+            if not email.strip() and not re.match(r"[^@]+@[^@]+\.[^@]+", email.strip()):
+                continue
+            emails.append(email.strip())
+
         action['task']['input'] = input_data
+        if isinstance(action['task']['input'], dict):
+            action['task']['input']['emails'] = emails
+        else:
+            print("Emails not added to input data")
+        print("Preparing to send email to:", emails)
 
         output_key = "email_result"
 

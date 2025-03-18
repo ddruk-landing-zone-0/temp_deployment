@@ -63,7 +63,7 @@ class EmailAgent:
 
     def run(self, script_result):
 
-        mails = self.get_recipient_emails()
+        mails = script_result.get('emails', self.get_recipient_emails())
 
         for i, script in enumerate(script_result['top'][:2]):
             base_path = f"assets/{script_result['bucket_id']}/top/{script['month']}_{script['age_group']}_{script['region']}_top_{i}"
