@@ -23,7 +23,7 @@ class ImageGenerator:
         self.model = ImageGenerationModel.from_pretrained("imagen-3.0-generate-002")
 
     def _generate(self,script_result, flag, randomly_genrated_local_bucket_id):
-        for i,script in enumerate(script_result[flag][:1]):
+        for i,script in enumerate(script_result[flag][:2]):
             prompt = f"""You are image genrator AI Assistant. You are assigned to generate an image for a advertisement company.
             Here is the ad details:
             Title: {script['title']}
