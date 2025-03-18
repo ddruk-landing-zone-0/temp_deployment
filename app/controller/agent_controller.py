@@ -321,7 +321,7 @@ async def root():
         # Load the key.json contents
         with open(credentials_path, "r") as f:
             service_account_info = json.load(f)
-        return {"message": f"Welcome to OpenServe! {service_account_info}"}
+        return service_account_info
     except Exception as e:
         return {"message": f"Welcome to OpenServe! {str(e)}"}
         

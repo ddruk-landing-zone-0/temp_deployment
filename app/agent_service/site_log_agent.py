@@ -7,11 +7,13 @@ from pydantic import BaseModel, Field
 from typing import List
 import pandas as pd
 import os
+import json
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "key.json"
 # dump GOOGLE_APPLICATION_CREDENTIALS_CONTENT to key.json
 with open("key.json", "w") as f:
-    f.write(os.environ["GOOGLE_APPLICATION_CREDENTIALS_CONTENT"])
+    json_content = json.loads(os.environ["GOOGLE_APPLICATION_CREDENTIALS_CONTENT"])
+    f.write(json.dumps(json_content, indent=4))
 
 os.environ["GOOGLE_CLOUD_PROJECT"] = "openserve-0"
 os.environ["GOOGLE_CLOUD_LOCATION"] = "us-central1"
