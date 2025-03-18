@@ -221,10 +221,12 @@ async def handle_action_image_generator_agent(
     background_tasks: BackgroundTasks,
     api_client: dict = Depends(get_api_clients)
 ):
+    print("^^^^^^^^  IMAGE GENERATOR AGENT ^^^^^^^^^")
     try:
         action = await request.json()
         workspace_id = action['workspace']['id']
         input_fname = f"assets/{workspace_id}/script_result.json"
+        print("^^^^^^^^  IMAGE GENERATOR AGENT ^^^^^^^^^", input_fname)
         input_data = load_json_data(input_fname)
         action['task']['input'] = input_data
 

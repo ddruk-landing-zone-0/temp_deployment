@@ -73,14 +73,12 @@ def generate_video(base_number):
                     "-y",
                     "-loop", "1",
                     "-i", edited_image_path,
-                    "-i", audio_path,
                     "-c:v", "libx264",
                     "-tune", "stillimage",
-                    "-c:a", "aac",
-                    "-b:a", "192k",
                     "-pix_fmt", "yuv420p",
-                    "-shortest",
-                    "-t", str(duration_sec),
+                    "-r", "1",               # 1 fps
+                    "-frames:v", "4",        # exactly 4 frames
+                    "-an",                  # no audio since duration is now unrelated
                     output_video
                 ]
                 subprocess.run(cmd, check=True)
