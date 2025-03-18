@@ -179,3 +179,4 @@ notebooks/api-testing.ipynb
 assets/
 .venv2/
 env.yaml
+key.json

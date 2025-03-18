@@ -54,6 +54,7 @@ class GeminiModel:
                 "Authorization": f"Bearer {self._access_token}",
                 "Content-Type": "application/json"
             }
+            print("Headers: ",self.headers)
 
             LOGGER.debug(f"Initialized GeminiModel with model {model_name} , project {self._project_id}, location {self._project_location}")
         except Exception as e:
