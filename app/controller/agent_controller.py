@@ -127,14 +127,16 @@ async def handle_action_trend_analyzer(
     background_tasks: BackgroundTasks,
     api_client: dict = Depends(get_api_clients)
 ):
-    action = await request.json()
-    action['task']['input'] = action['task']['input']
-    save_json_data(f"assets/{action['workspace']['id']}/user_input.json", {"product_description": action['task']['input']})
+    try:
+        action = await request.json()
+        action['task']['input'] = action['task']['input']
+        save_json_data(f"assets/{action['workspace']['id']}/user_input.json", {"product_description": action['task']['input']})
 
-    output_key = "trend_result"
+        output_key = "trend_result"
 
-    return await process_action("trend_analyzer", action, background_tasks, api_client, output_key=output_key)
-
+        return await process_action("trend_analyzer", action, background_tasks, api_client, output_key=output_key)
+    except Exception as e:
+        return JSONResponse({"error": str(e)}), 200
 
 
 @app.api_route("/site-log-agent", methods=["GET", "POST"])
@@ -143,17 +145,19 @@ async def handle_action_site_log_agent(
     background_tasks: BackgroundTasks,
     api_client: dict = Depends(get_api_clients)
 ):
-    action = await request.json()
+    try:
+        action = await request.json()
 
-    workspace_id = action['workspace']['id']
-    input_fname = f"assets/{workspace_id}/trend_result.json"
-    input_data = load_json_data(input_fname)
-    action['task']['input'] = input_data['product_id']
+        workspace_id = action['workspace']['id']
+        input_fname = f"assets/{workspace_id}/trend_result.json"
+        input_data = load_json_data(input_fname)
+        action['task']['input'] = input_data['product_id']
 
-    output_key = "site_log_result"
+        output_key = "site_log_result"
 
-    return await process_action("site_log_agent", action, background_tasks, api_client, output_key=output_key)
-
+        return await process_action("site_log_agent", action, background_tasks, api_client, output_key=output_key)
+    except Exception as e:
+        return JSONResponse({"error": str(e)}), 200
 
 
 @app.api_route("/site-log-refiner-agent", methods=["GET", "POST"])
@@ -162,17 +166,18 @@ async def handle_action_site_log_refiner_agent(
     background_tasks: BackgroundTasks,
     api_client: dict = Depends(get_api_clients)
 ):
-    
-    action = await request.json()
-    workspace_id = action['workspace']['id']
-    input_fname = f"assets/{workspace_id}/site_log_result.json"
-    input_data = load_json_data(input_fname)
-    action['task']['input'] = input_data
+    try:
+        action = await request.json()
+        workspace_id = action['workspace']['id']
+        input_fname = f"assets/{workspace_id}/site_log_result.json"
+        input_data = load_json_data(input_fname)
+        action['task']['input'] = input_data
 
-    output_key = "site_log_refiner_result"
+        output_key = "site_log_refiner_result"
 
-    return await process_action("site_log_refiner_agent", action, background_tasks, api_client, output_key=output_key)
-
+        return await process_action("site_log_refiner_agent", action, background_tasks, api_client, output_key=output_key)
+    except Exception as e:
+        return JSONResponse({"error": str(e)}), 200
 
 @app.api_route("/script-writer-agent", methods=["GET", "POST"])
 async def handle_action_script_writer_agent(
@@ -180,27 +185,29 @@ async def handle_action_script_writer_agent(
     background_tasks: BackgroundTasks,
     api_client: dict = Depends(get_api_clients)
 ):
-    action = await request.json()
-    workspace_id = action['workspace']['id']
-    input_fname_0 = f"assets/{workspace_id}/user_input.json"
-    input_fname_1 = f"assets/{workspace_id}/trend_result.json"
-    input_fname_2 = f"assets/{workspace_id}/site_log_refiner_result.json"
+    try:
+        action = await request.json()
+        workspace_id = action['workspace']['id']
+        input_fname_0 = f"assets/{workspace_id}/user_input.json"
+        input_fname_1 = f"assets/{workspace_id}/trend_result.json"
+        input_fname_2 = f"assets/{workspace_id}/site_log_refiner_result.json"
 
-    input_data_0 = load_json_data(input_fname_0)
-    input_data_1 = load_json_data(input_fname_1)
-    input_data_2 = load_json_data(input_fname_2)
+        input_data_0 = load_json_data(input_fname_0)
+        input_data_1 = load_json_data(input_fname_1)
+        input_data_2 = load_json_data(input_fname_2)
 
-    action['task']['input'] = {
-        "product_description": input_data_0,
-        "trend_result": input_data_1,
-        "site_log_refiner_result": input_data_2
-    }
+        action['task']['input'] = {
+            "product_description": input_data_0,
+            "trend_result": input_data_1,
+            "site_log_refiner_result": input_data_2
+        }
 
-    output_key = "script_result"
+        output_key = "script_result"
 
 
-    return await process_action("script_writer_agent", action, background_tasks, api_client, output_key=output_key)
-
+        return await process_action("script_writer_agent", action, background_tasks, api_client, output_key=output_key)
+    except Exception as e:
+        return JSONResponse({"error": str(e)}), 200
 
 @app.api_route("/image-generator-agent", methods=["GET", "POST"])
 async def handle_action_image_generator_agent(
@@ -208,17 +215,18 @@ async def handle_action_image_generator_agent(
     background_tasks: BackgroundTasks,
     api_client: dict = Depends(get_api_clients)
 ):
-    
-    action = await request.json()
-    workspace_id = action['workspace']['id']
-    input_fname = f"assets/{workspace_id}/script_result.json"
-    input_data = load_json_data(input_fname)
-    action['task']['input'] = input_data
+    try:
+        action = await request.json()
+        workspace_id = action['workspace']['id']
+        input_fname = f"assets/{workspace_id}/script_result.json"
+        input_data = load_json_data(input_fname)
+        action['task']['input'] = input_data
 
-    output_key = "image_script_result"
+        output_key = "image_script_result"
 
-    return await process_action("image_generator_agent", action, background_tasks, api_client, output_key=output_key)
-
+        return await process_action("image_generator_agent", action, background_tasks, api_client, output_key=output_key)
+    except Exception as e:
+        return JSONResponse({"error": str(e)}), 200
 
 @app.api_route("/audio-agent", methods=["GET", "POST"])
 async def handle_action_audio_agent(
@@ -226,17 +234,18 @@ async def handle_action_audio_agent(
     background_tasks: BackgroundTasks,
     api_client: dict = Depends(get_api_clients)
 ):
-    
-    action = await request.json()
-    workspace_id = action['workspace']['id']
-    input_fname = f"assets/{workspace_id}/image_script_result.json"
-    input_data = load_json_data(input_fname)
-    action['task']['input'] = input_data
+    try:
+        action = await request.json()
+        workspace_id = action['workspace']['id']
+        input_fname = f"assets/{workspace_id}/image_script_result.json"
+        input_data = load_json_data(input_fname)
+        action['task']['input'] = input_data
 
-    output_key = "audio_script_result"
+        output_key = "audio_script_result"
 
-    return await process_action("audio_agent", action, background_tasks, api_client, output_key=output_key)
-
+        return await process_action("audio_agent", action, background_tasks, api_client, output_key=output_key)
+    except Exception as e:
+        return JSONResponse({"error": str(e)}), 200
 
 @app.api_route("/video-agent", methods=["GET", "POST"])
 async def handle_action_video_agent(
@@ -244,14 +253,16 @@ async def handle_action_video_agent(
     background_tasks: BackgroundTasks,
     api_client: dict = Depends(get_api_clients)
 ):
-    action = await request.json()
-    input_data = int(action['workspace']['id'])
-    action['task']['input'] = input_data
+    try:
+        action = await request.json()
+        input_data = int(action['workspace']['id'])
+        action['task']['input'] = input_data
 
-    output_key = "video_result"
+        output_key = "video_result"
 
-    return await process_action("video_agent", action, background_tasks, api_client, output_key=output_key)
-
+        return await process_action("video_agent", action, background_tasks, api_client, output_key=output_key)
+    except Exception as e:
+        return JSONResponse({"error": str(e)}), 200
 
 @app.api_route("/email-agent", methods=["GET", "POST"])
 async def handle_action_email_agent(
@@ -259,17 +270,18 @@ async def handle_action_email_agent(
     background_tasks: BackgroundTasks,
     api_client: dict = Depends(get_api_clients)
 ):
-    
-    action = await request.json()
-    workspace_id = action['workspace']['id']
-    input_fname = f"assets/{workspace_id}/audio_script_result.json"
-    input_data = load_json_data(input_fname)
-    action['task']['input'] = input_data
+    try:
+        action = await request.json()
+        workspace_id = action['workspace']['id']
+        input_fname = f"assets/{workspace_id}/audio_script_result.json"
+        input_data = load_json_data(input_fname)
+        action['task']['input'] = input_data
 
-    output_key = "email_result"
+        output_key = "email_result"
 
-    return await process_action("email_agent", action, background_tasks, api_client, output_key=output_key)
-
+        return await process_action("email_agent", action, background_tasks, api_client, output_key=output_key)
+    except Exception as e:
+        return JSONResponse({"error": str(e)}), 200
 
 
 
