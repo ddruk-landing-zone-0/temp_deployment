@@ -197,6 +197,7 @@ class GeminiModel:
         try:
             url = f"https://{self._project_location}-aiplatform.googleapis.com/v1/projects/{self._project_id}/locations/{self._project_location}/publishers/google/models/{self._model_name}:generateContent"
             payload = self._create_payload_for_generate(content_role_list, system_instructions)
+            LOGGER.debug(f"Sending request to {url} with payload: {payload} where headers: {self.headers}")
             response = make_request_with_retries(self.max_retries, self.wait_time, url, headers=self.headers, json=payload)
             response.raise_for_status()
             response = response.json()
