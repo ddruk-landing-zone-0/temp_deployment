@@ -52,7 +52,6 @@ class ImageGenerator:
 
             try:
                 images[0].save(image_path)
-
                 print(f"Image generated for {image_name}. Now delaying for 30 sec to avoid rate limit.")
                 time.sleep(30)
             except Exception as e:

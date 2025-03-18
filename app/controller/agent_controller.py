@@ -232,6 +232,7 @@ async def handle_action_image_generator_agent(
 
         return await process_action("image_generator_agent", action, background_tasks, api_client, output_key=output_key)
     except Exception as e:
+        print(f"Error in image-generator-agent: {str(e)}")
         return JSONResponse({"error": str(e)}), 200
 
 @app.api_route("/audio-agent", methods=["GET", "POST"])
