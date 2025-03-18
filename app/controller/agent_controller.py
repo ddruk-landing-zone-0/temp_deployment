@@ -137,6 +137,9 @@ async def handle_action_trend_analyzer(
     try:
         action = await request.json()
         action['task']['input'] = action['task']['input']
+
+        print("<<<<<<<<<<<< TREND ANALYZER INPUT >>>>>>>>>>>>, ", action['task']['input'])
+
         save_json_data(f"assets/{action['workspace']['id']}/user_input.json", {"product_description": action['task']['input']})
 
         output_key = "trend_result"
@@ -160,6 +163,8 @@ async def handle_action_site_log_agent(
         input_data = load_json_data(input_fname)
         action['task']['input'] = input_data['product_id']
 
+        print("<<<<<<<<<<<< SITE LOG AGENT INPUT >>>>>>>>>>>>, ", action['task']['input'])
+
         output_key = "site_log_result"
 
         return await process_action("site_log_agent", action, background_tasks, api_client, output_key=output_key)
@@ -179,6 +184,8 @@ async def handle_action_site_log_refiner_agent(
         input_fname = f"assets/{workspace_id}/site_log_result.json"
         input_data = load_json_data(input_fname)
         action['task']['input'] = input_data
+
+        print("<<<<<<<<<<<< SITE LOG REFINER AGENT INPUT >>>>>>>>>>>>, ", action['task']['input'])
 
         output_key = "site_log_refiner_result"
 
@@ -209,6 +216,8 @@ async def handle_action_script_writer_agent(
             "site_log_refiner_result": input_data_2
         }
 
+        print("<<<<<<<<<<<< SCRIPT WRITER AGENT INPUT >>>>>>>>>>>>, ", action['task']['input'])
+
         output_key = "script_result"
 
 
@@ -228,8 +237,12 @@ async def handle_action_image_generator_agent(
         workspace_id = action['workspace']['id']
         input_fname = f"assets/{workspace_id}/script_result.json"
         print("^^^^^^^^  IMAGE GENERATOR AGENT ^^^^^^^^^", input_fname)
+
+        
         input_data = load_json_data(input_fname)
         action['task']['input'] = input_data
+
+        print("<<<<<<<<<<<< IMAGE GENERATOR AGENT INPUT >>>>>>>>>>>>, ", action['task']['input'])
 
         output_key = "image_script_result"
 
@@ -251,6 +264,8 @@ async def handle_action_audio_agent(
         input_data = load_json_data(input_fname)
         action['task']['input'] = input_data
 
+        print("<<<<<<<<<<<< AUDIO AGENT INPUT >>>>>>>>>>>>, ", action['task']['input'])
+
         output_key = "audio_script_result"
 
         return await process_action("audio_agent", action, background_tasks, api_client, output_key=output_key)
@@ -267,6 +282,8 @@ async def handle_action_video_agent(
         action = await request.json()
         input_data = int(action['workspace']['id'])
         action['task']['input'] = input_data
+
+        print("<<<<<<<<<<<< VIDEO AGENT INPUT >>>>>>>>>>>>, ", action['task']['input'])
 
         output_key = "video_result"
 
