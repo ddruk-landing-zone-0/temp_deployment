@@ -38,7 +38,7 @@ class SiteLogAgent:
         SITELOG_INMEM_DB_COLS, SITELOG_INMEM_DB_HEAD = SITELOG_INMEM_DB.query_data("SELECT * FROM sitelog LIMIT 5")
         self.PD_SITELOG_INMEM_DB_HEAD = pd.DataFrame(SITELOG_INMEM_DB_HEAD, columns=SITELOG_INMEM_DB_COLS)
 
-        self.product_engine = GeminiModel(
+        self.product_engine = GeminiJsonEngine(
                                     model_name="gemini-2.0-flash-001",
                                     basemodel=ProductId,
                                     temperature=0.5,
