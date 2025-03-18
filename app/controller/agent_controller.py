@@ -312,7 +312,9 @@ async def shutdown_event():
         await client["client"].close()
     print("Shutdown complete ✅")
 
-
+@app.get("/")
+async def root():
+    return {"message": "Welcome to OpenServe!"}
 
 
 
