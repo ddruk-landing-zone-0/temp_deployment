@@ -14,7 +14,7 @@ jobs:
             GCP_PROJECT_ID: openserve-0
             CLOUD_RUN_SERVICE: sample-python-prod-server
             CLOUD_RUN_REGION: us-central1
-            GAR_LOCATION: us-central1-docker.pkg.dev/hackathon0-project/python-prod-server
+            GAR_LOCATION: us-central1-docker.pkg.dev/openserve-0/python-prod-server
             GAR_LOCATION_PREFIX: us-central1-docker.pkg.dev
             IMAGE_NAME: sample-python-prod-server-image
             SERVICE_ACCOUNT: openserve0-sa@openserve-0.iam.gserviceaccount.com
