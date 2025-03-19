@@ -12,6 +12,8 @@ class EmailAgent:
     def __init__(self):
         self.SENDER_MAIL = os.environ.get("SENDER_MAIL")
         self.SENDER_PASSWORD = os.environ.get("SENDER_PASSWORD")
+        self.success_image = None
+        self.succes_audio = None
 
     def get_recipient_emails(self):
         emails = ["kabirrajsingh10@gmail.com", "ddruk2018@gmail.com"]
@@ -34,6 +36,10 @@ class EmailAgent:
                 img = MIMEImage(img_file.read())
                 img.add_header('Content-Disposition', f'attachment; filename="{os.path.basename(image_path)}"')
                 msg.attach(img)
+                self.success_image = img
+        else:
+            if self.success_image:
+                msg.attach(self.success_image)
 
         # Attach audio
         if os.path.exists(audio_path):
@@ -41,6 +47,10 @@ class EmailAgent:
                 audio = MIMEAudio(audio_file.read())
                 audio.add_header('Content-Disposition', f'attachment; filename="{os.path.basename(audio_path)}"')
                 msg.attach(audio)
+                self.succes_audio = audio
+        else:
+            if self.succes_audio:
+                msg.attach(self.succes_audio)
 
         # Attach video
         if os.path.exists(video_path):
@@ -101,6 +111,8 @@ class EmailAgent:
             )
 
         script_result['email_sent'] = True
+        self.success_image = None
+        self.succes_audio = None
         return script_result
 
 
