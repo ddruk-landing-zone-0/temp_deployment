@@ -350,16 +350,16 @@ async def shutdown_event():
 
 @app.get("/")
 async def root():
-    try:
-        import json
-        # Get the path from env var set by Cloud Run
-        credentials_path = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", "/secrets/my-key-json")
-        # Load the key.json contents
-        with open(credentials_path, "r") as f:
-            service_account_info = json.load(f)
-        return service_account_info
-    except Exception as e:
-        return {"message": f"Welcome to OpenServe! {str(e)}"}
+    # try:
+    #     import json
+    #     # Get the path from env var set by Cloud Run
+    #     credentials_path = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", "/secrets/my-key-json")
+    #     # Load the key.json contents
+    #     with open(credentials_path, "r") as f:
+    #         service_account_info = json.load(f)
+    #     return service_account_info
+    # except Exception as e:
+    #     return {"message": f"Welcome to OpenServe! {str(e)}"}
         
     return {"message": "Welcome to OpenServe!"}
 
