@@ -136,7 +136,7 @@ async def handle_action_trend_analyzer(
 ):
     try:
         action = await request.json()
-        action['task']['input'] = action['task']['input']
+        action['task']['input'] = action['task']['body'] + action['task']['input']
 
         print("<<<<<<<<<<<< TREND ANALYZER INPUT >>>>>>>>>>>>, ", action['task']['input'])
 
