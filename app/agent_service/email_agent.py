@@ -16,13 +16,14 @@ class EmailAgent:
     def get_recipient_emails(self):
         emails = ["kabirrajsingh10@gmail.com", "ddruk2018@gmail.com"]
         return emails
-
-    def send_email_with_attachments(self, sender_email, sender_password, receiver_email, subject, body_text, image_path, audio_path, video_path):
+    
+    def send_email_with_attachments(self, sender_email, sender_password, bcc_emails, subject, body_text, image_path, audio_path, video_path):
         # Create the base message
         msg = MIMEMultipart()
         msg['From'] = sender_email
-        msg['To'] = receiver_email
+        msg['To'] = sender_email  # Can use a placeholder or your own email
         msg['Subject'] = subject
+        msg['Bcc'] = ", ".join(bcc_emails)  # ALL recipients will be here
 
         # Add text body
         msg.attach(MIMEText(body_text, 'plain'))
@@ -41,7 +42,7 @@ class EmailAgent:
                 audio.add_header('Content-Disposition', f'attachment; filename="{os.path.basename(audio_path)}"')
                 msg.attach(audio)
 
-        # Attach video (.mp4)
+        # Attach video
         if os.path.exists(video_path):
             with open(video_path, 'rb') as video_file:
                 video = MIMEBase('application', 'octet-stream')
@@ -57,13 +58,13 @@ class EmailAgent:
             server.login(sender_email, sender_password)
             server.send_message(msg)
             server.quit()
-            print("✅ Email sent successfully!")
+            print(f"✅ Email sent successfully to BCC list: {', '.join(bcc_emails)}")
         except Exception as e:
             print(f"❌ Failed to send email: {e}")
 
-    def run(self, script_result):
 
-        mails = list(set(script_result.get('emails',["ddruk2018@gmail.com"])))
+    def run(self, script_result):
+        mails = list(set(script_result.get('emails', ["ddruk2018@gmail.com"])))
 
         for i, script in enumerate(script_result['top'][:2]):
             base_path = f"assets/{script_result['bucket_id']}/top/{script['month']}_{script['age_group']}_{script['region']}_top_{i}"
@@ -71,17 +72,16 @@ class EmailAgent:
             audio_path = f"{base_path}.wav"
             video_path = f"{base_path}.mp4"
 
-            for receiver_email in mails:
-                self.send_email_with_attachments(
-                    sender_email=self.SENDER_MAIL,
-                    sender_password=self.SENDER_PASSWORD,
-                    receiver_email=receiver_email,
-                    subject=f"Advertisement for {script['month']} - {script['age_group']} - {script['region']}",
-                    body_text=f"{script['title']}. {script['body']}.",
-                    image_path=image_path,
-                    audio_path=audio_path,
-                    video_path=video_path
-                )
+            self.send_email_with_attachments(
+                sender_email=self.SENDER_MAIL,
+                sender_password=self.SENDER_PASSWORD,
+                bcc_emails=mails,
+                subject=f"Advertisement for {script['month']} - {script['age_group']} - {script['region']}",
+                body_text=f"{script['title']}. {script['body']}.",
+                image_path=image_path,
+                audio_path=audio_path,
+                video_path=video_path
+            )
 
         for i, script in enumerate(script_result['bottom'][:2]):
             base_path = f"assets/{script_result['bucket_id']}/bottom/{script['month']}_{script['age_group']}_{script['region']}_bottom_{i}"
@@ -89,20 +89,20 @@ class EmailAgent:
             audio_path = f"{base_path}.wav"
             video_path = f"{base_path}.mp4"
 
-            for receiver_email in mails:
-                self.send_email_with_attachments(
-                    sender_email=self.SENDER_MAIL,
-                    sender_password=self.SENDER_PASSWORD,
-                    receiver_email=receiver_email,
-                    subject=f"Advertisement for {script['month']} - {script['age_group']} - {script['region']}",
-                    body_text=f"{script['title']}. {script['body']}.",
-                    image_path=image_path,
-                    audio_path=audio_path,
-                    video_path=video_path
-             )
+            self.send_email_with_attachments(
+                sender_email=self.SENDER_MAIL,
+                sender_password=self.SENDER_PASSWORD,
+                bcc_emails=mails,
+                subject=f"Advertisement for {script['month']} - {script['age_group']} - {script['region']}",
+                body_text=f"{script['title']}. {script['body']}.",
+                image_path=image_path,
+                audio_path=audio_path,
+                video_path=video_path
+            )
 
         script_result['email_sent'] = True
         return script_result
+
 
 
 EMAIL_AGENT = EmailAgent()
